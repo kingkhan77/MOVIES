@@ -6,7 +6,7 @@ export default {
     return {
       movieId: '',
       movieDetail: [],
-      loading : true
+      loading: true
     }
   },
 
@@ -16,29 +16,28 @@ export default {
 
   async beforeMount() {
     await this.getMovieDetail()
+    window.scrollTo(0, 100)
     console.log(this.movieDetail)
   },
 
   methods: {
-    async getMovieDetail() { 
+    async getMovieDetail() {
       this.loading = true
-      try{
-      this.movieDetail = await fetch(
-        `https://api.themoviedb.org/3/movie/${this.movieId}?api_key=f3772eb12fa502a02619cd4d5d529b59&language=en-US`
-      )
-        .then((response) => response.json())
-        .then((data) => data)
-        .catch((error) => console.log('ERROR: ', error))
-      }
-      catch(error){
-        console.log("ERROR:",error)
-      }
-      finally{
-        setTimeout(()=>{
+      try {
+        this.movieDetail = await fetch(
+          `https://api.themoviedb.org/3/movie/${this.movieId}?api_key=f3772eb12fa502a02619cd4d5d529b59&language=en-US`
+        )
+          .then((response) => response.json())
+          .then((data) => data)
+          .catch((error) => console.log('ERROR: ', error))
+      } catch (error) {
+        console.log('ERROR:', error)
+      } finally {
+        setTimeout(() => {
           this.loading = false
-        },1500)
+        }, 1500)
       }
-      },
+    },
 
     transform(input) {
       // Convert all alphabets to lower-case
@@ -57,13 +56,12 @@ export default {
 </script>
 
 <template>
-
-<div v-if="loading" class="w-screen h-full bg-gray-800 ">
+  <div v-if="loading" class="w-screen h-full bg-gray-800">
     <!-- Skeleton loader content -->
     <div class="relative w-full h-full bg-gradient-to-t from-black to-transparent pb-10">
       <div class="w-full flex flex-col gap-y-12 h-full">
         <div class="h-[430px] w-[300px] ml-[20%] mt-48 rounded-xl bg-gray-700 animate-pulse"></div>
-        <div class="flex flex-col  ml-[20%] mt-6 ">
+        <div class="flex flex-col ml-[20%] mt-6">
           <div class="h-16 w-1/3 bg-gray-700 mb-4 rounded-lg animate-pulse"></div>
           <div class="mt-3 w-1/2 h-20 bg-gray-700 mb-4 rounded-lg animate-pulse"></div>
           <div class="flex flex-col text-lg gap-2 mt-3">
@@ -79,7 +77,6 @@ export default {
     </div>
   </div>
 
-
   <div v-else-if="movieDetail">
     <div class="relative w-screen">
       <div
@@ -94,7 +91,7 @@ export default {
       <div class="relative w-full h-full bg-gradient-to-t from-black to-transparent pb-10">
         <div class="w-full flex flex-col gap-y-32">
           <img
-            class="h-[430px] w-[300px] ml-[20%] mt-48 rounded-xl "
+            class="h-[430px] w-[300px] ml-[20%] mt-48 rounded-xl"
             alt="Loading Image..."
             :src="'https://image.tmdb.org/t/p/original' + movieDetail.poster_path"
           />
@@ -186,7 +183,9 @@ export default {
             <div
               class="border-t-[1px] border-neutral-500 ml-3 w-[50%] text-blue-500 mt-3 pt-5 text-center"
             >
-              <h3 class="text-orange-600 underline font-medium text-[24px] duration-300 hover:text-[26px] animate-bounce">
+              <h3
+                class="text-orange-600 underline font-medium text-[24px] duration-300 hover:text-[26px] animate-bounce"
+              >
                 <img
                   src="https://www.freeiconspng.com/uploads/orange-click-here-hand-png-8.png"
                   class="h-[38px] mr-2"
